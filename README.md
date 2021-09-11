@@ -538,9 +538,128 @@ router(config)#exit
 ```
 
 ```
-
-```
-
-```
 router(config)#copy running-config startup-config
+```
+
+
+
+
+
+
+
+
+```
+enable
+	configure terminal
+		hostname router13
+		username admin privilege 15 secret glopglop
+		ip domain-name deule.net
+		crypto key generate rsa
+		ip ssh version 2
+		line vty 0 15
+			login local
+			transport input ssh
+			exit
+		line console 0
+			password glopglop
+			login
+			exit
+		service password-encryption
+		enable secret glopglop
+		banner motd #Restricted access#
+		vlan 1
+			name service
+			exit
+		interface vlan 1
+			ip address 172.26.1.58 /30
+			no shutdown
+		vlan 2
+			name filaire1
+			exit
+		interface vlan 2
+			ip address 172.26.1.38 /29
+			no shutdown
+			exit
+		interface g0/1/0
+			switchport mode access
+			switchport access vlan 2
+			no shutdown
+			exit
+		interface g0/1/2
+			switchport mode access
+			switchport access vlan 2
+			no shutdown
+			exit
+		vlan 3
+			name filaire2
+			exit
+		interface vlan 3
+			ip address 172.26.1.46 /29
+			no shutdown
+			exit
+		interface g0/1/1
+			switchport mode access
+			switchport access vlan 3
+			no shutdown
+			exit
+		vlan 4
+			name wifi1
+			exit
+		interface vlan 4
+			ip address 172.26.1.50 /30
+			no shutdown
+			exit
+		vlan 5
+			name wifi2
+			exit
+		interface vlan 5
+			ip address 172.26.1.54 /30
+			no shutdown
+			exit
+		interface g0/1/3
+			switchport mode trunk
+			switchport trunk allowed vlan 4,5
+			no shutdown
+			exit
+		ip dhcp pool groupea
+			network 172.26.1.48 /30
+			dns-server 193.48.57.48
+			default-router 172.26.1.50
+			exit
+		ip dhcp pool groupeb
+			network 172.26.1.52 /30
+			dns-server 193.48.57.48
+			default-router 172.26.1.54
+			exit
+		ip dhcp excluded-address 172.26.1.50
+		ip dhcp excluded-address 172.26.1.54
+		ip route 0.0.0.0 0.0.0.0 192.168.222.33
+		interface g0/0/0
+			ip address 192.168.222.43 /28
+			no shutdown
+			exit
+		router rip
+			version 2
+			no auto-summary
+			network 192.168.222.32
+			network 172.26.1.32
+			exit
+ 
+		int g0/0/0
+			no ip address
+			exit
+		int g0/0/0.132
+			encapsulation dot1q 132
+			ip address 192.168.222.43 255.255.255.240
+			no shutdown
+			exit
+		int g0/0/0.20
+			encapsulation dot1q 20
+			ip address 192.168.1.110 255.255.255.0
+			no shutdown
+			exit
+		no ip route 192.168.222.33
+		ip route 192.168.1.253
+		exit
+	copy running-config startup-config
 ```
