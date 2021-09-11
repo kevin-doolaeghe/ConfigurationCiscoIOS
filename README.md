@@ -16,6 +16,7 @@ Kevin Doolaeghe
 * [(config)# Mode de configuration globale](#config-mode-de-configuration-globale)
 * [(config-line)# Mode de configuration de ligne](#config-line-mode-de-configuration-de-ligne)
 * [(config-if)# Mode de configuration d'interface](#config-if-mode-de-configuration-dinterface)
+* [Configuration spécifique](#configuration-spécifique)
 
 ## > Mode d'exécution utilisateur
 
@@ -82,7 +83,9 @@ Kevin Doolaeghe
 | `clock rate 56000` | Définir la fréquence de l'horloge pour un périphérique de type ETCD |
 | `no shutdown` | Activer l'interface |
 
-## DHCP
+## Configuration spécifique
+
+### DHCP
 
 ```
 ip address excluded-address 1O.4.7.254
@@ -92,7 +95,7 @@ default-router 10.4.7.254
 dns-server 8.8.8.8
 ```
 
-## Listes de contrôle d'accès (ACL)
+### Listes de contrôle d'accès (ACL)
 
 * Configuration d'une règle simple (règles 1 à 99) :
 ```
@@ -121,7 +124,7 @@ RG20-7202(config-if)#exit
 show access-lists
 ```
 
-## NAT
+### NAT
 
 ```
 ip nat [inside|outside]
@@ -143,7 +146,7 @@ int  vlan 333
   exit
 ```
 
-## Telnet
+### Telnet
 
 ```
 router#configure terminal
@@ -154,7 +157,7 @@ router(config-line)#password cisco
 router(config-line)#exit
 ```
 
-## Secure Shell (SSH)
+### Secure Shell (SSH)
 
 ```
 router#configure terminal
@@ -169,7 +172,7 @@ router(config-line)#transport input ssh
 router(config-line)#exit
 ```
 
-## VLAN et tronçons
+### VLAN et tronçons
 
 * Configuration d'un VLAN :
 ```
@@ -222,7 +225,7 @@ router(config-if)#exit
 router(config)#exit
 ```
 
-## Configuration IP
+### Configuration IP
 
 * Configuration IPv4 sur une interface :
 ```
