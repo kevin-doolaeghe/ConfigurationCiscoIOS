@@ -62,13 +62,9 @@
 
 | Commande | Détail |
 |:-------------:|:--------------|
-| `` |  |
-| `` |  |
-| `` |  |
-| `` |  |
-| `` |  |
-| `` |  |
-| `` |  |
-| `` |  |
-| `` |  |
-| `` |  |
+| `ip address 192.168.0.5 255.255.255.0` | Définir la configuration IPv4 de l'interface |
+| `ipv6 address fe80::1 link-local` | Définir l'adresse IPv6 de lien local |
+| `ipv6 address 2001:db8:acad::1/64` | Définir l'adresse IPv6 de monodiffusion globale |
+| `description lan2` | Définir la description de l'interface |
+| `clock rate 56000` | Définir la fréquence de l'horloge pour un périphérique de type ETCD |
+| `no shutdown` | Activer l'interface |
