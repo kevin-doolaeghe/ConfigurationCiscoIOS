@@ -1,5 +1,14 @@
 # Aide à la configuration de routeurs/commutateurs sous Cisco IOS
 
+## Auteur
+
+Kevin Doolaeghe
+
+## Sources
+
+* [Cours de X Redon](https://rex.plil.fr/Admin/AccueilWeb/accueil001.html)
+* [Cours de S. Flament](http://btsirisinfo.free.fr/)
+
 ## Sommaire
 
 * [> Mode d'exécution utilisateur](#-mode-dexécution-utilisateur)
@@ -18,6 +27,8 @@
 | `show interfaces` | Afficher les statistiques des interfaces d'un périphérique |
 | `show ip(v6) interface [brief]` | Affiche les informations IP des interfaces d'un périphérique |
 | `show ip(v6) route` | Afficher la table de routage |
+| `show ip route egp` | Afficher les routes extérieures avec les protocole EGP |
+| `show ip route rip` | Afficher les routes extérieures avec les protocole RIP |
 | `show version` | Afficher la version du logiciel IOS et les informations sur le matériel |
 
 ## # Mode d'exécution privilégié
@@ -81,12 +92,33 @@ default-router 10.4.7.254
 dns-server 8.8.8.8
 ```
 
-## ACL
+## Listes de contrôle d'accès (ACL)
 
+* Configuration d'une règle simple (règles 1 à 99) :
 ```
-access-list 99 permit ip 10.4.10.0 0.0.0.255 any
+RG20-7202#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+RG20-7202(config)#access-list 1 deny 193.48.64.0 0.0.0.255
+RG20-7202(config)#access-list 1 permit any
+RG20-7202(config)#interface fastEthernet1/0
+RG20-7202(config-if)#ip access-group 1 out
+RG20-7202(config-if)#exit
+```
+
+* Configuration d'une règle complexe (règles 99 à 199) :
+```
+RG20-7202#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+RG20-7202(config)#access-list 100 deny tcp 193.48.64.39 0.0.0.0 any eq ftp      
+RG20-7202(config)#access-list 100 permit ip any any
+RG20-7202(config)#interface fastEthernet1/0
+RG20-7202(config-if)#ip access-group 100 out
+RG20-7202(config-if)#exit
+```
+
+* Afficher les listes de contrôle d'accès :
+```
 show access-lists
-ip access-list extended 99
 ```
 
 ## NAT
@@ -96,35 +128,127 @@ ip nat [inside|outside]
 show ip nat [translations|statistics]
 ```
 
-## SSH
-
+* Réaliser une translation d'IP (NAT statique) et non une mascarade (NAT dynamique) :
 ```
-username kevin secret cisco
-ip domain-name test.fr
-crypto key generate rsa
-ip ssh version 2
-line vty 0 15
-login local
-transport input ssh
+ip nat inside source static network 100.64.0.16 193.48.57.176 /28
 ```
 
-## VLAN
-
+* Associer des interfaces/VLAN au protocole NAT :
 ```
-interface f0/1
-switchport access vlan 8
-```
-
-## TRUNK
-
-```
-interface g0/2
-switchport mode trunk
-exit
-interface g0/2.8
-encapsulation dot1q 8
-ip address 192.168.1.253 255.255.255.0
-no shutdown
-exit
+int vlan 131
+  ip nat outside
+  exit
+int  vlan 333
+  ip nat inside
+  exit
 ```
 
+## Telnet
+
+```
+router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+router(config)#enable secret cisco
+router(config)#line vty 0 15
+router(config-line)#password cisco
+router(config-line)#exit
+```
+
+## Secure Shell (SSH)
+
+```
+router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+router(config)#hostname router
+router(config)#aaa new-model
+router(config)#username admin privilege 15 secret cisco
+router(config)#ip domain-name cisco.com
+router(config)#crypto key generate rsa
+router(config)#line vty 0 15
+router(config-line)#transport input ssh
+router(config-line)#exit
+```
+
+## VLAN et tronçons
+
+* Configuration d'un VLAN :
+```
+switch#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+switch(config)#vlan 2
+switch(config-vlan)#name Principal
+switch(config-vlan)#exit
+```
+
+* Affecter un VLAN à une interface :
+```
+switch#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+switch(config)#interface gigabitEthernet0/7
+switch(config-if)#switchport
+switch(config-if)#switchport mode access
+switch(config-if)#switchport access vlan 2
+switch(config-if)#exit
+```
+
+* Création d'un tronçon (802.1Q)
+```
+switch#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+switch(config)#interface fastEthernet0/1
+switch(config-if)#switchport trunk encapsulation dot1q
+switch(config-if)#switchport mode trunk
+switch(config-if)#exit
+```
+
+* Configuration d'un tronçon sur une sous-interface :
+```
+router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+router(config)#interface GigabitEthernet0/1.2
+router(config-subif)#encapsulation dot1Q 2
+router(config-subif)#ip address 192.168.2.1 255.255.255.0
+router(config-subif)#exit
+router(config)#exit
+```
+
+* Configuration d'un tronçon sur un VLAN :
+```
+router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+router(config)#interface Vlan2
+router(config-if)#ip address 192.168.2.1 255.255.255.0
+router(config-if)#exit
+router(config)#exit
+```
+
+## Configuration IP
+
+* Configuration IPv4 sur une interface :
+```
+router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+router(config)#interface GigabitEthernet0/1
+router(config-if)#ip address 192.168.0.1 255.255.255.0
+router(config-if)#exit
+router(config)#exit
+```
+
+* Configuration IPv4 sur les VLAN :
+```
+router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+router(config)#interface Vlan1
+router(config-if)#ip address 192.168.0.10 255.255.255.0
+router(config-if)#exit
+router(config)#exit
+```
+
+* Activer le routage :
+```
+router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+router(config)#ip routing
+router(config)#exit
+router#show ip route
+```
