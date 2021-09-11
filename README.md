@@ -20,19 +20,126 @@ Kevin Doolaeghe
 
 ## > Mode d'exécution utilisateur
 
-| Commande | Détail |
-|:-------------:|:--------------|
-| `enable` | Entrer en mode d'exécution privilégié |
-| `show arp` | Afficher le tableau ARP du périphérique |
-| `show clock` | Afficher l'heure en vigueur dans le routeur |
-| `show interfaces` | Afficher les statistiques des interfaces d'un périphérique |
-| `show ip(v6) interface [brief]` | Affiche les informations IP des interfaces d'un périphérique |
-| `show ip(v6) route` | Afficher la table de routage |
-| `show ip route egp` | Afficher les routes extérieures avec les protocole EGP |
-| `show ip route rip` | Afficher les routes extérieures avec les protocole RIP |
-| `show version` | Afficher la version du logiciel IOS et les informations sur le matériel |
+* Entrer en mode d'exécution privilégié :
+```
+enable
+```
+
+* Afficher le tableau ARP du périphérique :
+```
+show arp
+```
+
+* Afficher l'heure en vigueur dans le routeur :
+```
+show clock
+```
+
+* Afficher les statistiques des interfaces d'un périphérique :
+```
+show interfaces
+```
+
+* Affiche les informations IP des interfaces d'un périphérique :
+```
+show {ip|ipv6} interface {brief}
+```
+
+* Afficher la table de routage :
+```
+show {ip|ipv6} route
+```
+
+* Afficher les routes extérieures avec les protocole EIGRP :
+```
+show ip route egp
+```
+
+* Afficher les routes extérieures avec les protocole RIP :
+```
+show ip route rip
+```
+
+* Afficher les routes extérieures avec les protocole OSPF :
+```
+show ip route ospf
+```
+
+* Afficher la version du logiciel IOS et les informations sur le matériel :
+```
+show version
+```
 
 ## # Mode d'exécution privilégié
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
 
 | Commande | Détail |
 |:-------------:|:--------------|
@@ -48,6 +155,75 @@ Kevin Doolaeghe
 | `show interface trunk` | Afficher les interfaces `dot1q` |
 
 ## (config)# Mode de configuration globale
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
+
+```
+
+*  :
+```
 
 | Commande | Détail |
 |:-------------:|:--------------|
@@ -88,62 +264,60 @@ Kevin Doolaeghe
 ### DHCP
 
 ```
-ip address excluded-address 1O.4.7.254
-ip dhcp pool LAN7
-network 10.4.7.0 255.255.255.0
-default-router 10.4.7.254
-dns-server 8.8.8.8
+router(config)#ip address excluded-address 1O.4.7.254
+router(config)#ip dhcp pool LAN2
+router(config)#network 10.4.7.0 255.255.255.0
+router(config)#default-router 10.4.7.254
+router(config)#dns-server 8.8.8.8
 ```
 
 ### Listes de contrôle d'accès (ACL)
 
 * Configuration d'une règle simple (règles 1 à 99) :
 ```
-RG20-7202#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
-RG20-7202(config)#access-list 1 deny 193.48.64.0 0.0.0.255
-RG20-7202(config)#access-list 1 permit any
-RG20-7202(config)#interface fastEthernet1/0
-RG20-7202(config-if)#ip access-group 1 out
-RG20-7202(config-if)#exit
+router#configure terminal
+router(config)#access-list 1 deny 193.48.64.0 0.0.0.255
+router(config)#access-list 1 permit any
+router(config)#interface fastEthernet1/0
+router(config-if)#ip access-group 1 out
+router(config-if)#exit
 ```
 
 * Configuration d'une règle complexe (règles 99 à 199) :
 ```
-RG20-7202#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
-RG20-7202(config)#access-list 100 deny tcp 193.48.64.39 0.0.0.0 any eq ftp      
-RG20-7202(config)#access-list 100 permit ip any any
-RG20-7202(config)#interface fastEthernet1/0
-RG20-7202(config-if)#ip access-group 100 out
-RG20-7202(config-if)#exit
+router#configure terminal
+router(config)#access-list 100 deny tcp 193.48.64.39 0.0.0.0 any eq ftp      
+router(config)#access-list 100 permit ip any any
+router(config)#interface fastEthernet1/0
+router(config-if)#ip access-group 100 out
+router(config-if)#exit
 ```
 
 * Afficher les listes de contrôle d'accès :
 ```
-show access-lists
+router(config)#show access-lists
 ```
 
 ### NAT
 
 ```
-ip nat [inside|outside]
-show ip nat [translations|statistics]
+router(config)#ip nat [inside|outside]
+router(config)#show ip nat [translations|statistics]
 ```
 
 * Réaliser une translation d'IP (NAT statique) et non une mascarade (NAT dynamique) :
 ```
-ip nat inside source static network 100.64.0.16 193.48.57.176 /28
+router(config)#ip nat inside source static network 100.64.0.16 193.48.57.176 /28
 ```
 
 * Associer des interfaces/VLAN au protocole NAT :
 ```
-int vlan 131
-  ip nat outside
-  exit
-int  vlan 333
-  ip nat inside
-  exit
+router(config)#interface vlan 131
+router(config-if)#ip nat outside
+router(config-if)#exit
+router(config)#interface vlan 333
+router(config-if)#ip nat inside
+router(config-if)#exit
 ```
 
 ### Telnet
@@ -254,4 +428,119 @@ Enter configuration commands, one per line.  End with CNTL/Z.
 router(config)#ip routing
 router(config)#exit
 router#show ip route
+```
+
+## Exemple de configuration
+
+```
+router>enable
+```
+
+```
+router#configure terminale
+```
+
+* Changement du nom du périphérique :
+```
+router(config)#hostname router
+```
+
+* Configuration de l'accès SSH :
+```
+router(config)#aaa new-model
+router(config)#username admin privilege 15 secret cisco
+router(config)#ip domain-name cisco.com
+router(config)#crypto key generate rsa
+router(config)#ip ssh version 2
+router(config)#line vty 0 15
+router(config-line)#login local
+router(config-line)#transport input ssh
+router(config-line)#exit
+```
+
+* Configuration de l'accès console :
+```
+router(config)#line console 0
+router(config-line)#password cisco
+router(config-line)#login
+router(config-line)#exit
+```
+
+* Configuration de l'accès par mot de passe :
+```
+router(config)#service password-encryption
+router(config)#enable secret cisco
+router(config)#banner motd #Restricted access#
+```
+
+* Création du VLAN n°2 :
+```
+router(config)#vlan 2
+router(config-if)#name vlan2
+router(config-if)#exit
+```
+
+* Autorisation des trames du VLAN n°2 sur l'interface :
+```
+switch(config)#interface g0/1
+switch(config-if)#switchport
+switch(config-if)#switchport mode access
+switch(config-if)#switchport access vlan 2
+switch(config-if)#exit
+```
+
+* Création d'un tronçon (protocole 802.1Q) :
+```
+switch(config)#interface fastEthernet0/1
+switch(config-if)#switchport trunk encapsulation dot1q
+switch(config-if)#switchport mode trunk
+switch(config-if)#exit
+```
+
+* Configuration IP d'une interface :
+```
+router(config)#interface g0/1
+router(config-if)#ip address 192.168.0.1 255.255.255.0
+router(config-if)#exit
+```
+
+* Configuration IP d'un VLAN :
+```
+router(config)#interface vlan2
+router(config-if)#ip address 192.168.0.10 /24
+router(config-if)#no shutdown
+router(config-if)#exit
+```
+
+* Activation du routage :
+```
+router(config)#ip routing
+router(config)#exit
+router#show ip route
+router#configure terminal
+```
+
+* 
+```
+router(config)#interface g0/1.2
+router(config-subif)#encapsulation dot1Q 2
+router(config-subif)#ip address 192.168.2.1 255.255.255.0
+router(config-subif)#exit
+router(config)#exit
+```
+
+* 
+```
+router(config)#interface vlan2
+router(config-if)#ip address 192.168.2.1 255.255.255.0
+router(config-if)#exit
+router(config)#exit
+```
+
+```
+
+```
+
+```
+router(config)#copy running-config startup-config
 ```
