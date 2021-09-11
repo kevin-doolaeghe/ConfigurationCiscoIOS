@@ -6,7 +6,7 @@ Kevin Doolaeghe
 
 ## Sources
 
-* [Cours de X Redon](https://rex.plil.fr/)
+* [Cours de X. Redon](https://rex.plil.fr/)
 * [Cours de S. Flament](http://btsirisinfo.free.fr/)
 
 ## Sommaire
@@ -18,11 +18,193 @@ Kevin Doolaeghe
 * [(config-if)# Mode de configuration d'interface](#config-if-mode-de-configuration-dinterface)
 * [Configuration spécifique](#configuration-spécifique)
 
-## > Mode d'exécution utilisateur
+## Commandes de base
+
+### > Mode d'exécution utilisateur
 
 * Entrer en mode d'exécution privilégié :
 ```
 enable
+```
+
+### # Mode d'exécution privilégié
+
+* Entrer en mode de configuration globale :
+```
+configure terminal
+```
+
+* Sauvegarder la configuration active en mémoire NVRAM :
+```
+copy running-config startup-config
+```
+
+* Effacer la configuration stockée en mémoire NVRAM :
+```
+erase startup-config
+```
+
+* Envoyer une requête `ping` à l'adresse spécifiée :
+```
+ping {ip-address}
+```
+
+* Suivre chaque saut jusqu'à l'adresse spécifiée :
+```
+traceroute {ip-address}
+```
+
+### (config)# Mode de configuration globale
+
+* Changer le nom d'hôte du périphérique :
+```
+hostname {hostname}
+```
+
+* Créer une route :
+```
+{ip|ipv6} route {network-address} {subnet-mask} {ip-address|exit-intf}
+```
+
+* Configurer une route IPv4 par défaut :
+```
+ip route 0.0.0.0 0.0.0.0 {ip-address|exit-intf}
+```
+
+* Configurer une route IPv6 par défaut :
+```
+ipv6 route :: /0 {ipv6-address|exit-intf}
+```
+
+* Définir un mot de passe actif non chiffré :
+```
+enable password {password}
+```
+
+* Définir un mot de passe actif utilisant un chiffrement fort :
+```
+enable secret {password}
+```
+
+* Activer le chiffrement des mots de passe de type `password` :
+```
+service password-encryption
+```
+
+* Configurer une bannière contenant un message du jour :
+```
+banner motd # Restricted Access #
+```
+
+* Entrer en mode de configuration de ligne de console :
+```
+line console 0
+```
+
+* Entrer en mode de configuration de ligne de terminal virtuel (`telnet`, `ssh`) :
+```
+line vty 0 15
+```
+
+* Entrer en mode de configuration d'interface (`g0/0`, `f0/0`, `s0/0/0`, `vlan1`..) :
+```
+interface {intf}
+```
+
+### (config-if)# Mode de configuration d'interface
+
+* Définir la configuration IPv4 de l'interface :
+```
+ip address {network-address} {subnet-mask}
+```
+
+* Définir l'adresse IPv6 de lien local :
+```
+ipv6 address fe80::1 link-local
+```
+
+* Définir l'adresse IPv6 de monodiffusion globale :
+```
+ipv6 address 2001:db8:acad::1/64
+```
+
+* Définir la description de l'interface :
+```
+description {description}
+```
+
+* Définir la fréquence de l'horloge pour un périphérique de type ETCD :
+```
+clock rate 56000
+```
+
+* Activer l'interface :
+```
+no shutdown
+```
+
+### (config-line)# Mode de configuration de ligne
+
+* Définir un mot de passe de ligne :
+```
+password {password}
+```
+
+* Activer le contrôle d'accès par mot de pase à l'ouverture de la session :
+```
+login
+```
+
+### Commandes `show`
+
+* Afficher la configuration stockée en NVRAM :
+```
+show startup-config
+```
+
+* Afficher le contenu du fichier de configuration en cours d'exécution :
+```
+show running-config
+```
+
+* Afficher la version du logiciel IOS et les informations sur le matériel :
+```
+show version
+```
+
+* Afficher les routes par défaut, de secours, statiques, internes et externes (EIGRP, OSPF, RIP..) :
+```
+show {ip|ipv6} route [egp|ospf|rip]
+```
+
+* Afficher la configuration IP des interfaces du périphérique :
+```
+show {ip|ipv6} interface [brief]
+```
+
+* Lister les interfaces :
+```
+show interfaces
+```
+
+* Afficher les configurations NAT :
+```
+show ip nat [translations|statistics]
+```
+
+* Afficher les VLAN :
+```
+show vlan
+```
+
+* Afficher les tronçons :
+```
+show interface trunk
+```
+
+* Afficher les détails des voisins :
+```
+show cpd neighbors detail
 ```
 
 * Afficher le tableau ARP du périphérique :
@@ -35,64 +217,16 @@ show arp
 show clock
 ```
 
-* Afficher les statistiques des interfaces d'un périphérique :
+## Configuration d'un routeur
+
+* Activer le routage IPv4 :
 ```
-show interfaces
+ip routing
 ```
 
-* Affiche les informations IP des interfaces d'un périphérique :
+* Activer le routage IPv6 :
 ```
-show {ip|ipv6} interface {brief}
-```
-
-* Afficher la table de routage :
-```
-show {ip|ipv6} route
-```
-
-* Afficher les routes extérieures avec les protocole EIGRP :
-```
-show ip route egp
-```
-
-* Afficher les routes extérieures avec les protocole RIP :
-```
-show ip route rip
-```
-
-* Afficher les routes extérieures avec les protocole OSPF :
-```
-show ip route ospf
-```
-
-* Afficher la version du logiciel IOS et les informations sur le matériel :
-```
-show version
-```
-
-## # Mode d'exécution privilégié
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
+ipv6 unicast-routing
 ```
 
 *  :
@@ -118,65 +252,6 @@ show version
 *  :
 ```
 
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-| Commande | Détail |
-|:-------------:|:--------------|
-| `configure terminal` | Entrer en mode de configuration globale |
-| `copy running-config startup-config` | Sauvegarder la configuration active en mémoire NVRAM |
-| `erase startup-config` | Effacer la configuration stockée en mémoire NVRAM |
-| `ping 8.8.8.8` | Envoyer une requête `ping` à l'adresse spécifiée |
-| `traceroute 192.168.1.254` | Suivre chaque saut jusqu'à l'adresse spécifiée |
-| `show startup-config` | Afficher la configuration stockée en NVRAM |
-| `show running-config` | Afficher le contenu du fichier de configuration en cours d'exécution |
-| `show ip nat [translations|statistics]` | Afficher les informations NAT |
-| `show vlan` | Afficher les VLANs créés |
-| `show interface trunk` | Afficher les interfaces `dot1q` |
-
-## (config)# Mode de configuration globale
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
 ```
 
 *  :
@@ -202,19 +277,13 @@ show version
 *  :
 ```
 
-*  :
 ```
 
-```
+## Configuration d'un commutateur
 
-*  :
+* Configurer une passerelle par défaut :
 ```
-
-```
-
-*  :
-```
-
+ip default-gateway {ip-address}
 ```
 
 *  :
@@ -225,50 +294,29 @@ show version
 *  :
 ```
 
-| Commande | Détail |
-|:-------------:|:--------------|
-| `hostname routeur1` | Attibuer un nom d'hôte au périphérique |
-| `enable password cisco` | Définir un mot de passe actif non chiffré |
-| `enable secret cisco` | Définir un mot de passe actif utilisant un chiffrement fort |
-| `service password-encryption` | Activer le chiffage des mots de passe de type `password` |
-| `banner motd # Warning !! Restricted Access #` | Configurer une bannière contenant un message du jour |
-| `line console 0` | Entrer en mode de configuration de ligne de console |
-| `line vty 0 15` | Entrer en mode de configuration de ligne de terminal virtuel (`telnet`, `ssh`) |
-| `interface g0/0` | Entrer en mode de configuration d'interface (`g0/0`, `f0/0`, `s0/0/0`, `vlan1`..) |
-| `ip route 7.7.0.0 255.255.255.0 4.4.5.8` | Créer une route vers le réseau `7.7.0.0` en passant par `4.4.5.8` |
-| `ip route 7.7.0.0 255.255.255.0 s0/0/1` | Créer une route vers le réseau `7.7.0.0` en sortant par `s0/0/0` |
-| `ip default-gateway 10.10.1.1` | Configurer la passerelle par défaut d'un équipement |
-| `ipv6 route 2001:db8:acad:2::/64 s0/0/0 fe80::2` | Créer une route vers le réseau en sortant par `s0/0/0` |
-| `ipv6 unicast-routing` | Activer le routage IPv6 |
+```
 
-## (config-line)# Mode de configuration de ligne
+*  :
+```
 
-| Commande | Détail |
-|:-------------:|:--------------|
-| `password cisco` | Définir un mot de passe de ligne |
-| `login` | Activer le contrôle d'accès par mot de pase à l'ouverture de la session |
+```
 
-## (config-if)# Mode de configuration d'interface
+*  :
+```
 
-| Commande | Détail |
-|:-------------:|:--------------|
-| `ip address 192.168.0.5 255.255.255.0` | Définir la configuration IPv4 de l'interface |
-| `ipv6 address fe80::1 link-local` | Définir l'adresse IPv6 de lien local |
-| `ipv6 address 2001:db8:acad::1/64` | Définir l'adresse IPv6 de monodiffusion globale |
-| `description LAN2` | Définir la description de l'interface |
-| `clock rate 56000` | Définir la fréquence de l'horloge pour un périphérique de type ETCD |
-| `no shutdown` | Activer l'interface |
+```
 
 ## Configuration spécifique
 
 ### DHCP
 
 ```
-router(config)#ip address excluded-address 1O.4.7.254
 router(config)#ip dhcp pool LAN2
-router(config)#network 10.4.7.0 255.255.255.0
-router(config)#default-router 10.4.7.254
-router(config)#dns-server 8.8.8.8
+router(dhcp-config)#network 10.4.7.0 255.255.255.0
+router(dhcp-config)#default-router 10.4.7.254
+router(dhcp-config)#dns-server 8.8.8.8
+router(dhcp-config)#exit
+router(config)#ip address excluded-address 1O.4.7.254
 ```
 
 ### Listes de contrôle d'accès (ACL)
@@ -475,17 +523,39 @@ router(config)#banner motd #Restricted access#
 
 * Création du VLAN n°2 :
 ```
+router(config)#vlan 1
+router(config-if)#name service
+router(config-if)#exit
+
 router(config)#vlan 2
-router(config-if)#name vlan2
+router(config-if)#name filaire1
+router(config-if)#exit
+
+router(config)#vlan 3
+router(config-if)#name filaire2
+router(config-if)#exit
+
+router(config)#vlan 4
+router(config-if)#name wifi1
+router(config-if)#exit
+
+router(config)#vlan 5
+router(config-if)#name wifi2
 router(config-if)#exit
 ```
 
 * Autorisation des trames du VLAN n°2 sur l'interface :
 ```
-switch(config)#interface g0/1
-switch(config-if)#switchport
+switch(config)#interface g0/1/0
 switch(config-if)#switchport mode access
 switch(config-if)#switchport access vlan 2
+switch(config-if)#no shutdown
+switch(config-if)#exit
+
+switch(config)#interface g0/1/2
+switch(config-if)#switchport mode access
+switch(config-if)#switchport access vlan 2
+switch(config-if)#no shutdown
 switch(config-if)#exit
 ```
 
@@ -506,8 +576,13 @@ router(config-if)#exit
 
 * Configuration IP d'un VLAN :
 ```
-router(config)#interface vlan2
-router(config-if)#ip address 192.168.0.10 /24
+router(config)#interface vlan1
+router(config-if)#ip address 172.26.1.58 /30
+router(config-if)#no shutdown
+router(config-if)#exit
+
+router(config)#interface vlan 2
+router(config-if)#ip address 172.26.1.38 /29
 router(config-if)#no shutdown
 router(config-if)#exit
 ```
@@ -520,146 +595,102 @@ router#show ip route
 router#configure terminal
 ```
 
-* 
+* Configuration IP des VLAN :
 ```
-router(config)#interface g0/1.2
-router(config-subif)#encapsulation dot1Q 2
-router(config-subif)#ip address 192.168.2.1 255.255.255.0
-router(config-subif)#exit
-router(config)#exit
-```
-
-* 
-```
-router(config)#interface vlan2
+router(config)#interface vlan 2
 router(config-if)#ip address 192.168.2.1 255.255.255.0
+router(config-if)#exit
+router(config)#exit
+router(config)#interface vlan 3
+router(config-if)#ip address 172.26.1.46 /29
+router(config-if)#exit
+router(config)#exit
+router(config)#interface vlan 4
+router(config-if)#ip address 172.26.1.50 /30
+router(config-if)#exit
+router(config)#exit
+router(config)#interface vlan 5
+router(config-if)#ip address 172.26.1.54 /30
 router(config-if)#exit
 router(config)#exit
 ```
 
+* Autorisation du VLAN dans l'interface :
+```
+router(config)#interface g0/1/1
+router(config-if)#switchport mode access
+router(config-if)#switchport access vlan 3
+router(config-if)#no shutdown
+router(config-if)#exit
+```
+
+* Déclaration du tronçon :
+```
+router(config)#interface g0/1/3
+router(config-if)#switchport mode trunk
+router(config-if)#switchport trunk allowed vlan 4,5
+router(config-if)#no shutdown
+router(config-if)#exit
+```
+
+* Configuration du routage dynamique :
+```
+router(config)#router rip
+router(config-router)#version 2
+router(config-router)#no auto-summary
+router(config-router)#network 192.168.222.32
+router(config-router)#network 172.26.1.32
+router(config-router)#exit
+```
+
+* Déclaration des tronçons :
+```
+router(config)#interface g0/0/0
+router(config-if)#no ip address
+router(config-if)#no shutdown
+router(config-if)#exit
+router(config)#interface g0/0/0.132
+router(config-if)#encapsulation dot1q 132
+router(config-if)#ip address 192.168.222.43 255.255.255.240
+router(config-if)#no shutdown
+router(config-if)#exit
+router(config)#interface g0/0/0.20
+router(config-if)#encapsulation dot1q 20
+router(config-if)#ip address 192.168.1.110 255.255.255.0
+router(config-if)#no shutdown
+router(config-if)#exit
+```
+
+* Déclaration des routes :
+```
+router(config)#no ip route 192.168.222.33
+router(config)#ip route 192.168.1.253
+```
+
+* Ajout d'une route par défaut :
+```
+router(config)#ip route 0.0.0.0 0.0.0.0 192.168.222.33
+```
+
+* Configuration du DHCP :
+```
+router(config)#ip dhcp pool groupea
+router(dhcp-config)#network 172.26.1.48 /30
+router(dhcp-config)#dns-server 193.48.57.48
+router(dhcp-config)#default-router 172.26.1.50
+router(dhcp-config)#exit
+
+router(config)#ip dhcp pool groupeb
+router(dhcp-config)#network 172.26.1.52 /30
+router(dhcp-config)#dns-server 193.48.57.48
+router(dhcp-config)#default-router 172.26.1.54
+router(dhcp-config)#exit
+
+router(config)#ip dhcp excluded-address 172.26.1.50
+router(config)#ip dhcp excluded-address 172.26.1.54
+```
+
+* Sauvegarde de la configuration actuelle dans la NVRAM :
 ```
 router(config)#copy running-config startup-config
-```
-
-
-
-
-
-
-
-
-```
-enable
-	configure terminal
-		hostname router13
-		username admin privilege 15 secret glopglop
-		ip domain-name deule.net
-		crypto key generate rsa
-		ip ssh version 2
-		line vty 0 15
-			login local
-			transport input ssh
-			exit
-		line console 0
-			password glopglop
-			login
-			exit
-		service password-encryption
-		enable secret glopglop
-		banner motd #Restricted access#
-		vlan 1
-			name service
-			exit
-		interface vlan 1
-			ip address 172.26.1.58 /30
-			no shutdown
-		vlan 2
-			name filaire1
-			exit
-		interface vlan 2
-			ip address 172.26.1.38 /29
-			no shutdown
-			exit
-		interface g0/1/0
-			switchport mode access
-			switchport access vlan 2
-			no shutdown
-			exit
-		interface g0/1/2
-			switchport mode access
-			switchport access vlan 2
-			no shutdown
-			exit
-		vlan 3
-			name filaire2
-			exit
-		interface vlan 3
-			ip address 172.26.1.46 /29
-			no shutdown
-			exit
-		interface g0/1/1
-			switchport mode access
-			switchport access vlan 3
-			no shutdown
-			exit
-		vlan 4
-			name wifi1
-			exit
-		interface vlan 4
-			ip address 172.26.1.50 /30
-			no shutdown
-			exit
-		vlan 5
-			name wifi2
-			exit
-		interface vlan 5
-			ip address 172.26.1.54 /30
-			no shutdown
-			exit
-		interface g0/1/3
-			switchport mode trunk
-			switchport trunk allowed vlan 4,5
-			no shutdown
-			exit
-		ip dhcp pool groupea
-			network 172.26.1.48 /30
-			dns-server 193.48.57.48
-			default-router 172.26.1.50
-			exit
-		ip dhcp pool groupeb
-			network 172.26.1.52 /30
-			dns-server 193.48.57.48
-			default-router 172.26.1.54
-			exit
-		ip dhcp excluded-address 172.26.1.50
-		ip dhcp excluded-address 172.26.1.54
-		ip route 0.0.0.0 0.0.0.0 192.168.222.33
-		interface g0/0/0
-			ip address 192.168.222.43 /28
-			no shutdown
-			exit
-		router rip
-			version 2
-			no auto-summary
-			network 192.168.222.32
-			network 172.26.1.32
-			exit
- 
-		int g0/0/0
-			no ip address
-			exit
-		int g0/0/0.132
-			encapsulation dot1q 132
-			ip address 192.168.222.43 255.255.255.240
-			no shutdown
-			exit
-		int g0/0/0.20
-			encapsulation dot1q 20
-			ip address 192.168.1.110 255.255.255.0
-			no shutdown
-			exit
-		no ip route 192.168.222.33
-		ip route 192.168.1.253
-		exit
-	copy running-config startup-config
 ```
