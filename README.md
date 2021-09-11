@@ -1,4 +1,4 @@
-# Aide à la configuration de routeurs/commutateurs Cisco IOS
+# Aide à la configuration de routeurs/commutateurs sous Cisco IOS
 
 ## Sommaire
 
