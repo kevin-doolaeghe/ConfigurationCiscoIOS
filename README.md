@@ -31,7 +31,9 @@
 | `traceroute 192.168.1.254` | Suivre chaque saut jusqu'à l'adresse spécifiée |
 | `show startup-config` | Afficher la configuration stockée en NVRAM |
 | `show running-config` | Afficher le contenu du fichier de configuration en cours d'exécution |
-| `show ip nat...` | Afficher les informations NAT selon l'option (translations, statistics) |
+| `show ip nat [translations|statistics]` | Afficher les informations NAT |
+| `show vlan` | Afficher les VLANs créés |
+| `show interface trunk` | Afficher les interfaces `dot1q` |
 
 ## (config)# Mode de configuration globale
 
@@ -65,6 +67,64 @@
 | `ip address 192.168.0.5 255.255.255.0` | Définir la configuration IPv4 de l'interface |
 | `ipv6 address fe80::1 link-local` | Définir l'adresse IPv6 de lien local |
 | `ipv6 address 2001:db8:acad::1/64` | Définir l'adresse IPv6 de monodiffusion globale |
-| `description lan2` | Définir la description de l'interface |
+| `description LAN2` | Définir la description de l'interface |
 | `clock rate 56000` | Définir la fréquence de l'horloge pour un périphérique de type ETCD |
 | `no shutdown` | Activer l'interface |
+
+## DHCP
+
+```
+ip address excluded-address 1O.4.7.254
+ip dhcp pool LAN7
+network 10.4.7.0 255.255.255.0
+default-router 10.4.7.254
+dns-server 8.8.8.8
+```
+
+## ACL
+
+```
+access-list 99 permit ip 10.4.10.0 0.0.0.255 any
+show access-lists
+ip access-list extended 99
+```
+
+## NAT
+
+```
+ip nat [inside|outside]
+show ip nat [translations|statistics]
+```
+
+## SSH
+
+```
+username kevin secret cisco
+ip domain-name test.fr
+crypto key generate rsa
+ip ssh version 2
+line vty 0 15
+login local
+transport input ssh
+```
+
+## VLAN
+
+```
+interface f0/1
+switchport access vlan 8
+```
+
+## TRUNK
+
+```
+interface g0/2
+switchport mode trunk
+exit
+interface g0/2.8
+encapsulation dot1q 8
+ip address 192.168.1.253 255.255.255.0
+no shutdown
+exit
+```
+
