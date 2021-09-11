@@ -24,182 +24,197 @@ Kevin Doolaeghe
 
 * Entrer en mode d'exécution privilégié :
 ```
-enable
+router>enable
 ```
 
 ### # Mode d'exécution privilégié
 
 * Entrer en mode de configuration globale :
 ```
-configure terminal
+router#configure terminal
 ```
 
 * Sauvegarder la configuration active en mémoire NVRAM :
 ```
-copy running-config startup-config
+router#copy running-config startup-config
 ```
 
 * Effacer la configuration stockée en mémoire NVRAM :
 ```
-erase startup-config
+router#erase startup-config
 ```
 
 * Envoyer une requête `ping` à l'adresse spécifiée :
 ```
-ping {ip-address}
+router#ping {ip-address}
 ```
 
 * Suivre chaque saut jusqu'à l'adresse spécifiée :
 ```
-traceroute {ip-address}
+router#traceroute {ip-address}
 ```
 
 ### (config)# Mode de configuration globale
 
 * Changer le nom d'hôte du périphérique :
 ```
-hostname {hostname}
+router(config)#hostname {hostname}
 ```
 
 * Créer une route :
 ```
-{ip|ipv6} route {network-address} {subnet-mask} {ip-address|exit-intf}
+router(config)#{ip|ipv6} route {network-address} {subnet-mask} {ip-address|exit-intf}
 ```
 
 * Configurer une route IPv4 par défaut :
 ```
-ip route 0.0.0.0 0.0.0.0 {ip-address|exit-intf}
+router(config)#ip route 0.0.0.0 0.0.0.0 {ip-address|exit-intf}
 ```
 
 * Configurer une route IPv6 par défaut :
 ```
-ipv6 route :: /0 {ipv6-address|exit-intf}
+router(config)#ipv6 route :: /0 {ipv6-address|exit-intf}
 ```
 
 * Définir un mot de passe actif non chiffré :
 ```
-enable password {password}
+router(config)#enable password {password}
 ```
 
 * Définir un mot de passe actif utilisant un chiffrement fort :
 ```
-enable secret {password}
+router(config)#enable secret {password}
 ```
 
 * Activer le chiffrement des mots de passe de type `password` :
 ```
-service password-encryption
+router(config)#service password-encryption
 ```
 
 * Configurer une bannière contenant un message du jour :
 ```
-banner motd # Restricted Access #
+router(config)#banner motd # Restricted Access #
 ```
 
 * Entrer en mode de configuration de ligne de console :
 ```
-line console 0
+router(config)#line console 0
 ```
 
 * Entrer en mode de configuration de ligne de terminal virtuel (`telnet`, `ssh`) :
 ```
-line vty 0 15
+router(config)#line vty 0 15
 ```
 
 * Entrer en mode de configuration d'interface (`g0/0`, `f0/0`, `s0/0/0`, `vlan1`..) :
 ```
-interface {intf}
+router(config)#interface {intf}
 ```
 
 ### (config-if)# Mode de configuration d'interface
 
 * Définir la configuration IPv4 de l'interface :
 ```
-ip address {network-address} {subnet-mask}
+router(config-if)#ip address {network-address} {subnet-mask}
 ```
 
 * Définir l'adresse IPv6 de lien local :
 ```
-ipv6 address fe80::1 link-local
+router(config-if)#ipv6 address fe80::1 link-local
 ```
 
 * Définir l'adresse IPv6 de monodiffusion globale :
 ```
-ipv6 address 2001:db8:acad::1/64
+router(config-if)#ipv6 address 2001:db8:acad::1/64
 ```
 
 * Définir la description de l'interface :
 ```
-description {description}
+router(config-if)#description {description}
 ```
 
 * Définir la fréquence de l'horloge pour un périphérique de type ETCD :
 ```
-clock rate 56000
+router(config-if)#clock rate 56000
 ```
 
 * Activer l'interface :
 ```
-no shutdown
+router(config-if)#no shutdown
 ```
 
 ### (config-line)# Mode de configuration de ligne
 
 * Définir un mot de passe de ligne :
 ```
-password {password}
+router(config-line)#password {password}
 ```
 
 * Activer le contrôle d'accès par mot de pase à l'ouverture de la session :
 ```
-login
+router(config-line)#login
 ```
 
 ### Commandes `show`
 
 * Afficher la configuration stockée en NVRAM :
 ```
-show startup-config
+router#show startup-config
 ```
 
 * Afficher le contenu du fichier de configuration en cours d'exécution :
 ```
-show running-config
+router#show running-config
 ```
 
 * Afficher la version du logiciel IOS et les informations sur le matériel :
 ```
-show version
+router#show version
 ```
 
-* Afficher les routes par défaut, de secours, statiques, internes et externes (EIGRP, OSPF, RIP..) :
+* Afficher l'historiques des commandes exécutées :
 ```
-show {ip|ipv6} route [egp|ospf|rip]
-```
-
-* Afficher la configuration IP des interfaces du périphérique :
-```
-show {ip|ipv6} interface [brief]
+router#show history
 ```
 
 * Lister les interfaces :
 ```
-show interfaces
+router#show interfaces
+```
+
+* Afficher la configuration IP des interfaces du périphérique :
+```
+router#show {ip|ipv6} interface [brief]
+```
+
+* Afficher les routes par défaut, de secours, statiques, internes et externes (EIGRP, OSPF, RIP..) :
+```
+router#show {ip|ipv6} route [egp|ospf|rip]
+```
+
+* Afficher la table d'adresses MAC :
+```
+router#show mac-address-table
 ```
 
 * Afficher les configurations NAT :
 ```
-show ip nat [translations|statistics]
+router#show ip nat [translations|statistics]
 ```
 
 * Afficher les VLAN :
 ```
-show vlan
+router#show vlan
 ```
 
 * Afficher les tronçons :
 ```
 show interface trunk
+```
+
+* Afficher l'état des adresses MAC sécurisées :
+```
+show port-security address
 ```
 
 * Afficher les détails des voisins :
@@ -221,95 +236,49 @@ show clock
 
 * Activer le routage IPv4 :
 ```
-ip routing
+router(config)#ip routing
 ```
 
 * Activer le routage IPv6 :
 ```
-ipv6 unicast-routing
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
-```
-
-*  :
-```
-
+router(config)#ipv6 unicast-routing
 ```
 
 ## Configuration d'un commutateur
 
 * Configurer une passerelle par défaut :
 ```
-ip default-gateway {ip-address}
+switch(config)#ip default-gateway {ip-address}
 ```
 
-*  :
+* Détecter automatiquement le type de câble (droit ou croisé) :
+```
+switch(config-if)#mdix auto
 ```
 
+* Négocier automatiquement les paramètres bidirectionnels :
+```
+switch(config-if)#duplex auto
 ```
 
-*  :
+* Négocier automatiquement les paramètres de vitesse :
+```
+switch(config-if)#speed auto
 ```
 
+* Activer la sécurité des ports :
+```
+switch(config-if)#switchport port-security
 ```
 
-*  :
+* Activer l'apprentissage rémanent :
 ```
-
-```
-
-*  :
-```
-
+switch(config-if)#switchport port-security mac-address sticky
 ```
 
 ## Configuration spécifique
 
-### DHCP
-
+### Protocole DHCP :
 ```
 router(config)#ip dhcp pool LAN2
 router(dhcp-config)#network 10.4.7.0 255.255.255.0
@@ -372,7 +341,6 @@ router(config-if)#exit
 
 ```
 router#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 router(config)#enable secret cisco
 router(config)#line vty 0 15
 router(config-line)#password cisco
@@ -383,7 +351,6 @@ router(config-line)#exit
 
 ```
 router#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 router(config)#hostname router
 router(config)#aaa new-model
 router(config)#username admin privilege 15 secret cisco
@@ -399,7 +366,6 @@ router(config-line)#exit
 * Configuration d'un VLAN :
 ```
 switch#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 switch(config)#vlan 2
 switch(config-vlan)#name Principal
 switch(config-vlan)#exit
@@ -408,7 +374,6 @@ switch(config-vlan)#exit
 * Affecter un VLAN à une interface :
 ```
 switch#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 switch(config)#interface gigabitEthernet0/7
 switch(config-if)#switchport
 switch(config-if)#switchport mode access
@@ -419,7 +384,6 @@ switch(config-if)#exit
 * Création d'un tronçon (802.1Q)
 ```
 switch#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 switch(config)#interface fastEthernet0/1
 switch(config-if)#switchport trunk encapsulation dot1q
 switch(config-if)#switchport mode trunk
@@ -429,7 +393,6 @@ switch(config-if)#exit
 * Configuration d'un tronçon sur une sous-interface :
 ```
 router#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 router(config)#interface GigabitEthernet0/1.2
 router(config-subif)#encapsulation dot1Q 2
 router(config-subif)#ip address 192.168.2.1 255.255.255.0
@@ -440,7 +403,6 @@ router(config)#exit
 * Configuration d'un tronçon sur un VLAN :
 ```
 router#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 router(config)#interface Vlan2
 router(config-if)#ip address 192.168.2.1 255.255.255.0
 router(config-if)#exit
@@ -452,7 +414,6 @@ router(config)#exit
 * Configuration IPv4 sur une interface :
 ```
 router#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 router(config)#interface GigabitEthernet0/1
 router(config-if)#ip address 192.168.0.1 255.255.255.0
 router(config-if)#exit
@@ -462,7 +423,6 @@ router(config)#exit
 * Configuration IPv4 sur les VLAN :
 ```
 router#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 router(config)#interface Vlan1
 router(config-if)#ip address 192.168.0.10 255.255.255.0
 router(config-if)#exit
@@ -472,7 +432,6 @@ router(config)#exit
 * Activer le routage :
 ```
 router#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 router(config)#ip routing
 router(config)#exit
 router#show ip route
