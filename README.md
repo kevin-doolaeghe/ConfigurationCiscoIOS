@@ -6,7 +6,7 @@ Kevin Doolaeghe
 
 ## Sources
 
-* [Cours de X Redon](https://rex.plil.fr/Admin/AccueilWeb/accueil001.html)
+* [Cours de X Redon](https://rex.plil.fr/)
 * [Cours de S. Flament](http://btsirisinfo.free.fr/)
 
 ## Sommaire
