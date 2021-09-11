@@ -120,7 +120,7 @@ router(config)#line console 0
 router(config)#line vty 0 15
 ```
 
-* Entrer en mode de configuration d'interface (`g0/0`, `f0/0`, `s0/0/0`, `vlan1`..) :
+* Entrer en mode de configuration d'interface (`g0/0`, `f0/0`, `s0/0/0`,`loopback`, `vlan1`..) :
 ```
 router(config)#interface {intf}
 ```
