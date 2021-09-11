@@ -11,12 +11,26 @@ Kevin Doolaeghe
 
 ## Sommaire
 
-* [> Mode d'exécution utilisateur](#-mode-dexécution-utilisateur)
-* [# Mode d'exécution privilégié](#-mode-dexécution-privilégié)
-* [(config)# Mode de configuration globale](#config-mode-de-configuration-globale)
-* [(config-line)# Mode de configuration de ligne](#config-line-mode-de-configuration-de-ligne)
-* [(config-if)# Mode de configuration d'interface](#config-if-mode-de-configuration-dinterface)
+* [Commandes de base](#commandes-de-base)
+  * [> Mode d'exécution utilisateur](#-mode-dexécution-utilisateur)
+  * [# Mode d'exécution privilégié](#-mode-dexécution-privilégié)
+  * [(config)# Mode de configuration globale](#config-mode-de-configuration-globale)
+  * [(config-line)# Mode de configuration de ligne](#config-line-mode-de-configuration-de-ligne)
+  * [(config-if)# Mode de configuration d'interface](#config-if-mode-de-configuration-dinterface)
+  * [Commandes `show`](#commandes-show)
+* [Configuration d'un routeur](#configuration-dun-routeur)
+* [Configuration d'un commutateur](#)
 * [Configuration spécifique](#configuration-spécifique)
+  * [DHCP](#protocole-dhcp)
+  * [ACT](#listes-de-contrôle-daccès-acl)
+  * [NAT](#nat)
+  * [Telnet](#telnet)
+  * [SSH](#secure-shell-ssh)
+  * [VLAN/Trunk](#vlan-et-tronçons)
+  * [Configuration IP](#configuration-ip)
+  * [Routage RIP](#configuration-du-routage-rip)
+  * [Routage OSPF](#configuration-du-routage-ospf)
+* [Exemple de configuration](#exemple-de-configuration)
 
 ## Commandes de base
 
@@ -278,7 +292,7 @@ switch(config-if)#switchport port-security mac-address sticky
 
 ## Configuration spécifique
 
-### Protocole DHCP :
+### Protocole DHCP
 ```
 router(config)#ip dhcp pool LAN2
 router(dhcp-config)#network 10.4.7.0 255.255.255.0
@@ -435,6 +449,25 @@ router#configure terminal
 router(config)#ip routing
 router(config)#exit
 router#show ip route
+```
+
+### Configuration du routage RIP
+```
+router(config)#router rip
+router(config-router)#version 2
+router(config-router)#no auto-summary
+router(config-router)#network 192.168.222.32
+router(config-router)#network 172.26.1.32
+router(config-router)#exit
+```
+
+### Configuration du routage OSPF
+```
+router(config)#router ospf 1
+router(config-router)#router-id 1.1.1.1
+router(config-router)#network 172.16.1.1 0.0.0.0 area 0
+router(config-router)#network 172.16.2.1 0.0.0.0 area 0
+router(config-router)#exit
 ```
 
 ## Exemple de configuration
