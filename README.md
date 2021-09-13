@@ -477,7 +477,7 @@ router>enable
 ```
 
 ```
-router#configure terminale
+router#configure terminal
 ```
 
 * Changement du nom du périphérique :
