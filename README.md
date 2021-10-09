@@ -20,7 +20,7 @@
   * [(config-if)# Mode de configuration d'interface](#config-if-mode-de-configuration-dinterface)
   * [Commandes `show`](#commandes-show)
 * [Configuration d'un routeur](#configuration-dun-routeur)
-* [Configuration d'un commutateur](#)
+* [Configuration d'un commutateur](#configuration-dun-commutateur)
 * [Configuration spécifique](#configuration-spécifique)
   * [DHCP](#protocole-dhcp)
   * [ACT](#listes-de-contrôle-daccès-acl)
@@ -31,7 +31,7 @@
   * [Configuration IP](#configuration-ip)
   * [Routage RIP](#configuration-du-routage-rip)
   * [Routage OSPF](#configuration-du-routage-ospf)
-* [Exemple de configuration](#exemple-de-configuration)
+* [Exemple de configuration d'un routeur-commutateur](#exemple-de-configuration-dun-routeur-commutateur)
 
 ## Commandes de base
 
