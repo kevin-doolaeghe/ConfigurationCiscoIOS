@@ -2,10 +2,11 @@
 
 ## Auteur
 
-Kevin Doolaeghe
+### Kevin Doolaeghe
 
 ## Sources
 
+* [Documentation Cisco IOS](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/configuration/15mt/fundamentals-15-mt-book.html)
 * [Cours de X. Redon](https://rex.plil.fr/)
 * [Cours de S. Flament](http://btsirisinfo.free.fr/)
 
@@ -385,6 +386,8 @@ switch(config-vlan)#name Principal
 switch(config-vlan)#exit
 ```
 
+#### Configuration en commutation :
+
 * Affecter un VLAN à une interface :
 ```
 switch#configure terminal
@@ -394,6 +397,18 @@ switch(config-if)#switchport mode access
 switch(config-if)#switchport access vlan 2
 switch(config-if)#exit
 ```
+
+* Affecter un tronçon à une interface :
+```
+switch#configure terminal
+switch(config)#interface gigabitEthernet0/7
+switch(config-if)#switchport
+switch(config-if)#switchport mode trunk
+switch(config-if)#switchport trunk allowed vlan 2-5
+switch(config-if)#exit
+```
+
+#### Routage inter-VLAN (Router On A Stick) :
 
 * Création d'un tronçon (802.1Q)
 ```
@@ -429,7 +444,7 @@ router(config)#exit
 ```
 router#configure terminal
 router(config)#interface GigabitEthernet0/1
-router(config-if)#ip address 192.168.0.1 255.255.255.0
+router(config-if)#ip address 192.168.0.10 255.255.255.0
 router(config-if)#exit
 router(config)#exit
 ```
@@ -470,7 +485,7 @@ router(config-router)#network 172.16.2.1 0.0.0.0 area 0
 router(config-router)#exit
 ```
 
-## Exemple de configuration
+## Exemple de configuration d'un routeur-commutateur
 
 ```
 router>enable
@@ -487,7 +502,6 @@ router(config)#hostname router
 
 * Configuration de l'accès SSH :
 ```
-router(config)#aaa new-model
 router(config)#username admin privilege 15 secret cisco
 router(config)#ip domain-name cisco.com
 router(config)#crypto key generate rsa
